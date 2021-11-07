@@ -1,10 +1,12 @@
 # Mecha.Python
 import tkinter
+from tkinter import ttk
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 from matplotlib.figure import Figure
 import matplotlib.animation as animation
 import matplotlib.patches as patches
 import numpy as np
+import pandas as pd
 
 
 def arm_right(ax, x, y, s, th_deg):
@@ -164,7 +166,8 @@ def balloon_up():
               [(x_max - x_min) / 2 - 0.1, y_max - 1], [x_min + 0.5, y_max - 1]]
     patch = patches.Polygon(xy=points, closed=True, fill=False, ec='lime', linewidth=1)
     ax1.add_patch(patch)
-    ax1.text((x_max - x_min) / 2, y_max - 0.5, balloon_up_txt, horizontalalignment="center", c='lime')
+    ax1.text((x_max - x_min) / 2, y_max - 0.35, balloon_up_txt, horizontalalignment="center",
+             verticalalignment="top", c='lime')
 
 
 def balloon_right():
@@ -174,7 +177,7 @@ def balloon_right():
               [x_min + 2, y_min + 0.7]]
     patch = patches.Polygon(xy=points, closed=True, fill=False, ec='lime', linewidth=1)
     ax1.add_patch(patch)
-    ax1.text(x_min + 2.1, y_min + 0.8, balloon_right_txt, c='lime')
+    ax1.text(x_min + 2.1, y_min + 0.95, balloon_right_txt, c='lime', verticalalignment="top")
 
 
 def board():
@@ -186,25 +189,59 @@ def board():
     ax1.text(x_min + 2.1, y_max - 0.5, board_txt, c='lime')
 
 
-def set_axis():
-    ax1.set_xlim(x_min, x_max)
-    ax1.set_ylim(y_min, y_max)
-    ax1.set_xticks([])
-    ax1.set_yticks([])
-    ax1.set_title('Mecha.Python', c='dimgray')
-    ax1.set_aspect('equal')
-    ax1.set_facecolor('#002000')
+def load_file():
+    global file_name, balloon_right_txt, df
+    file_name = ent_file.get() + ".csv"
+    try:
+        df = pd.read_csv(file_name, sep=',', index_col=0)
+        print(file_name)
+        print(df.head(3))
+        print(df.tail(3))
+    except Exception as e:
+        print(e)
+        balloon_right_txt = str(e) + "\nPut a file in the same directory of mecha_python.py"
+        presentation()
 
 
-def update(f):
-    global cnt, motion_cnt, arm_th_deg_r
-    ax1.cla()
-    set_axis()
-    # Update items
-    # Count
-    ax1.text(x_min, y_max * 0.95, 'cnt=' + str(cnt), c='lime')
-    # Robot
-    # Bye motion
+def exe_command():
+    global df, sequence_num, is_end, on_play, title, balloon_up_txt, balloon_right_txt, board_txt, wait_cnt
+    if on_play:
+        if wait_cnt == 0:
+            if not is_end:
+                sequence_num += 1
+                cmd = df.at[sequence_num, 'command']
+                opd = df.at[sequence_num, 'operand']
+                print(str(cmd) + ': ' + str(opd))
+                if cmd == "EOF":
+                    is_end = True
+                elif cmd == "title":
+                    title = opd.strip('"')
+                elif cmd == "balloon_up":
+                    balloon_up_txt = opd.strip('"')
+                elif cmd == "balloon_up_append":
+                    balloon_up_txt = balloon_up_txt + "\n"
+                    balloon_up_txt = balloon_up_txt + opd.strip('"')
+                elif cmd == "board":
+                    board_txt = opd.strip('"')
+                elif cmd == "balloon_right":
+                    balloon_right_txt = opd.strip('"')
+                elif cmd == "hi":
+                    hi()
+                elif cmd == "presentation":
+                    presentation()
+                elif cmd == "wait":
+                    wait_cnt = int(opd)
+        else:
+            wait_cnt -= 1
+
+
+def play():
+    global on_play
+    on_play = True
+
+
+def bye_motion():
+    global motion_cnt, arm_th_deg_r
     if on_bye:
         if motion_cnt == 0:
             arm_th_deg_r = 60
@@ -219,7 +256,25 @@ def update(f):
         motion_cnt += 1
         if motion_cnt > 4:
             motion_cnt = 0
-    # Robot
+
+
+def set_axis():
+    ax1.set_xlim(x_min, x_max)
+    ax1.set_ylim(y_min, y_max)
+    ax1.set_xticks([])
+    ax1.set_yticks([])
+    ax1.set_title(title, c='dimgray')
+    ax1.set_aspect('equal')
+    ax1.set_facecolor('#002000')
+
+
+def update(f):
+    global cnt
+    ax1.cla()
+    set_axis()
+    # Update items
+    ax1.text(x_min, y_max * 0.95, ' file:' + file_name + ' cnt=' + str(cnt), c='lime')
+    bye_motion()
     robot(ax1, x_robot, y_robot, s_robot)
     # Speech balloon up
     if on_balloon_up:
@@ -231,7 +286,9 @@ def update(f):
     if on_board:
         board()
 
-    cnt += 1
+    exe_command()
+    if on_play:
+        cnt += 1
 
 
 # Global variables
@@ -241,7 +298,45 @@ y_min = 0.
 y_max = 4.
 
 cnt = 0
-isPlay = False
+on_play = False
+sequence_num = 0
+is_end = False
+
+x_center = 4.
+y_center = 2.
+x_left = 1.
+x_right = 7.
+x_robot = x_center
+y_robot = y_center
+s_robot = 0.5     # Scale
+
+arm_th_deg_r_default = - 80
+arm_th_deg_l_default = - 100
+arm_th_deg_r = arm_th_deg_r_default
+arm_th_deg_l = arm_th_deg_l_default
+
+on_bye = False
+on_balloon_up = False
+on_balloon_right = False
+on_board = False
+
+motion_cnt = 0
+wait_cnt = 0
+
+dsp_txt = "Py"
+hello_txt = "Hello world.\nI am Mecha.Python!"
+balloon_up_txt = hello_txt
+balloon_right_txt = "I will start my presentation."
+board_txt = "STEP 1"
+file_name = ""
+
+title_default = "Mecha.Python"
+title = title_default
+
+# create dataset
+dummy = pd.Series(list('abc'))
+# create dummy variables
+df = pd.get_dummies(dummy)
 
 # Generate tkinter
 root = tkinter.Tk()
@@ -251,29 +346,6 @@ root.title("Mecha.Python")
 fig = Figure(figsize=(8, 4), facecolor="lightgray")
 ax1 = fig.add_subplot(111)
 set_axis()
-
-# Parameters
-x_center = 4.
-y_center = 2.
-x_left = 1.
-x_right = 7.
-x_robot = x_center
-y_robot = y_center
-s_robot = 0.5     # Scale
-arm_th_deg_r_default = - 80
-arm_th_deg_l_default = - 100
-arm_th_deg_r = arm_th_deg_r_default
-arm_th_deg_l = arm_th_deg_l_default
-on_bye = False
-on_balloon_up = False
-on_balloon_right = False
-on_board = False
-motion_cnt = 0
-dsp_txt = "Py"
-hello_txt = "Hello world. I am Mecha.Python!"
-balloon_up_txt = hello_txt
-balloon_right_txt = "I will start my presentation."
-board_txt = "STEP 1"
 
 # Embed a figure in canvas
 canvas = FigureCanvasTkAgg(fig, root)
@@ -295,13 +367,13 @@ btn_play_pause = tkinter.Button(root, text="Center", command=center)
 btn_play_pause.pack(side='left')
 btn_forward = tkinter.Button(root, text="Right", command=right)
 btn_forward.pack(side='left')
-btn_raise_hand_l = tkinter.Button(root, text="Raise L-hand", command=raise_hand_l)
+btn_raise_hand_l = tkinter.Button(root, text="Raise L", command=raise_hand_l)
 btn_raise_hand_l.pack(side='left')
-btn_raise_hand_r = tkinter.Button(root, text="Raise R-hand", command=raise_hand_r)
+btn_raise_hand_r = tkinter.Button(root, text="Raise R", command=raise_hand_r)
 btn_raise_hand_r.pack(side='left')
-btn_lower_hand_l = tkinter.Button(root, text="Lower L-hand", command=lower_hand_l)
+btn_lower_hand_l = tkinter.Button(root, text="Lower L", command=lower_hand_l)
 btn_lower_hand_l.pack(side='left')
-btn_lower_hand_r = tkinter.Button(root, text="Lower R-hand", command=lower_hand_r)
+btn_lower_hand_r = tkinter.Button(root, text="Lower R", command=lower_hand_r)
 btn_lower_hand_r.pack(side='left')
 btn_hi = tkinter.Button(root, text="Hi!", command=hi)
 btn_hi.pack(side='left')
@@ -311,7 +383,15 @@ btn_bye = tkinter.Button(root, text="Bye!", command=bye)
 btn_bye.pack(side='left')
 btn_reset = tkinter.Button(root, text="Reset", command=reset)
 btn_reset.pack(side='left')
-
+# Entry a presentation file
+frm_ent = ttk.Labelframe(root, relief="ridge", text="Presentation file", labelanchor="n")
+ent_file = tkinter.Entry(frm_ent)
+ent_file.pack(side='left')
+btn_load = tkinter.Button(frm_ent, text="Load", command=load_file)
+btn_load.pack(side='left')
+btn_play = tkinter.Button(frm_ent, text="Play", command=play)
+btn_play.pack(side='left')
+frm_ent.pack(side='left')
 
 # main loop
 tkinter.mainloop()
