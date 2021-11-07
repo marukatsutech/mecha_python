@@ -73,7 +73,8 @@ def robot(ax, x, y, s):
     ax.add_patch(foot_r)
     foot_l = patches.Wedge(center=(x - s * 0.4, y - s * 3), r=0.15, theta1=0, theta2=180, fc='lightgray', ec='darkgray')
     ax.add_patch(foot_l)
-    body = patches.Rectangle(xy=(x - s * 1 / 2, y - s * 1.9), width=s * 1, height=s * 1.2, fc='lightgray', ec='darkgray')
+    body = patches.Rectangle(xy=(x - s * 1 / 2, y - s * 1.9), width=s * 1, height=s * 1.2,
+                             fc='lightgray', ec='darkgray')
     ax.add_patch(body)
     dsp = patches.Rectangle(xy=(x - s * 0.8 / 2, y - s * 1.4), width=s * 0.8, height=s * 0.6, fc='white', ec='darkgray')
     ax.add_patch(dsp)
@@ -105,19 +106,19 @@ def raise_hand_r():
 
 
 def raise_hand_l():
-    global arm_th_deg_l, on_bye
+    global on_bye, arm_th_deg_l
     on_bye = False
     arm_th_deg_l = 100.
 
 
 def lower_hand_r():
-    global arm_th_deg_r, on_bye
+    global on_bye, arm_th_deg_r
     on_bye = False
     arm_th_deg_r = arm_th_deg_r_default
 
 
 def lower_hand_l():
-    global arm_th_deg_l, on_bye
+    global on_bye, arm_th_deg_l
     on_bye = False
     arm_th_deg_l = arm_th_deg_l_default
 
@@ -129,18 +130,60 @@ def bye():
 
 
 def hi():
-    global on_bye, dsp_txt
-    on_bye = False
+    global on_bye, on_balloon_up, x_robot, dsp_txt
+    reset()
     raise_hand_l()
     dsp_txt = "Hi!"
+    on_balloon_up = True
+
+
+def presentation():
+    global on_balloon_right, on_board, x_robot
+    reset()
+    x_robot = x_left
+    on_balloon_right = True
+    on_board = True
 
 
 def reset():
-    global on_bye, dsp_txt
+    global on_bye, on_balloon_up, on_balloon_right, on_board, x_robot, dsp_txt
     on_bye = False
+    on_balloon_up = False
+    on_balloon_right = False
+    on_board = False
     lower_hand_r()
     lower_hand_l()
     dsp_txt = "Py"
+    x_robot = x_center
+
+
+def balloon_up():
+    global balloon_up_txt
+    points = [[x_min + 0.5, y_max - 0.3], [x_max - 0.5, y_max - 0.3], [x_max - 0.5, y_max - 1],
+              [(x_max - x_min) / 2 + 0.1, y_max - 1], [(x_max - x_min) / 2, y_max - 1.2],
+              [(x_max - x_min) / 2 - 0.1, y_max - 1], [x_min + 0.5, y_max - 1]]
+    patch = patches.Polygon(xy=points, closed=True, fill=False, ec='lime', linewidth=1)
+    ax1.add_patch(patch)
+    ax1.text((x_max - x_min) / 2, y_max - 0.5, balloon_up_txt, horizontalalignment="center", c='lime')
+
+
+def balloon_right():
+    global balloon_right_txt
+    points = [[x_min + 2, y_min + 0.3], [x_max - 0.5, y_min + 0.3], [x_max - 0.5, y_min + 1],
+              [x_min + 2, y_min + 1], [x_min + 2, y_min + 0.9], [x_min + 1.8, y_min + 1.2],
+              [x_min + 2, y_min + 0.7]]
+    patch = patches.Polygon(xy=points, closed=True, fill=False, ec='lime', linewidth=1)
+    ax1.add_patch(patch)
+    ax1.text(x_min + 2.1, y_min + 0.8, balloon_right_txt, c='lime')
+
+
+def board():
+    global board_txt
+    points = [[x_min + 2, y_min + 1.2], [x_max - 0.5, y_min + 1.2], [x_max - 0.5, y_max - 0.3],
+              [x_min + 2, y_max - 0.3], [x_min + 2, y_min + 1.2]]
+    patch = patches.Polygon(xy=points, closed=True, fill=False, ec='green', linewidth=1)
+    ax1.add_patch(patch)
+    ax1.text(x_min + 2.1, y_max - 0.5, board_txt, c='lime')
 
 
 def set_axis():
@@ -161,6 +204,7 @@ def update(f):
     # Count
     ax1.text(x_min, y_max * 0.95, 'cnt=' + str(cnt), c='lime')
     # Robot
+    # Bye motion
     if on_bye:
         if motion_cnt == 0:
             arm_th_deg_r = 60
@@ -175,7 +219,17 @@ def update(f):
         motion_cnt += 1
         if motion_cnt > 4:
             motion_cnt = 0
+    # Robot
     robot(ax1, x_robot, y_robot, s_robot)
+    # Speech balloon up
+    if on_balloon_up:
+        balloon_up()
+    # Speech balloon right
+    if on_balloon_right:
+        balloon_right()
+    # Board
+    if on_board:
+        board()
 
     cnt += 1
 
@@ -211,8 +265,15 @@ arm_th_deg_l_default = - 100
 arm_th_deg_r = arm_th_deg_r_default
 arm_th_deg_l = arm_th_deg_l_default
 on_bye = False
+on_balloon_up = False
+on_balloon_right = False
+on_board = False
 motion_cnt = 0
 dsp_txt = "Py"
+hello_txt = "Hello world. I am Mecha.Python!"
+balloon_up_txt = hello_txt
+balloon_right_txt = "I will start my presentation."
+board_txt = "STEP 1"
 
 # Embed a figure in canvas
 canvas = FigureCanvasTkAgg(fig, root)
@@ -244,6 +305,8 @@ btn_lower_hand_r = tkinter.Button(root, text="Lower R-hand", command=lower_hand_
 btn_lower_hand_r.pack(side='left')
 btn_hi = tkinter.Button(root, text="Hi!", command=hi)
 btn_hi.pack(side='left')
+btn_speech = tkinter.Button(root, text="Presentation", command=presentation)
+btn_speech.pack(side='left')
 btn_bye = tkinter.Button(root, text="Bye!", command=bye)
 btn_bye.pack(side='left')
 btn_reset = tkinter.Button(root, text="Reset", command=reset)
