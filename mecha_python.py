@@ -214,21 +214,37 @@ def exe_command():
                 print(str(cmd) + ': ' + str(opd))
                 if cmd == "EOF":
                     is_end = True
+                elif cmd == "title_clear":
+                    title = ""
                 elif cmd == "title":
                     title = opd.strip('"')
+                elif cmd == "balloon_up_clear":
+                    balloon_up_txt = ""
                 elif cmd == "balloon_up":
                     balloon_up_txt = opd.strip('"')
                 elif cmd == "balloon_up_append":
                     balloon_up_txt = balloon_up_txt + "\n"
                     balloon_up_txt = balloon_up_txt + opd.strip('"')
+                elif cmd == "board_clear":
+                    board_txt = ""
                 elif cmd == "board":
                     board_txt = opd.strip('"')
+                elif cmd == "board_append":
+                    board_txt = board_txt + "\n"
+                    board_txt = board_txt + opd.strip('"')
+                elif cmd == "balloon_right_clear":
+                    balloon_right_txt = ""
                 elif cmd == "balloon_right":
                     balloon_right_txt = opd.strip('"')
+                elif cmd == "balloon_right_append":
+                    balloon_right_txt = balloon_right_txt + "\n"
+                    balloon_right_txt = balloon_right_txt + opd.strip('"')
                 elif cmd == "hi":
                     hi()
                 elif cmd == "presentation":
                     presentation()
+                elif cmd == "bye":
+                    bye()
                 elif cmd == "wait":
                     wait_cnt = int(opd)
         else:
