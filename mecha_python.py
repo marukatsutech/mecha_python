@@ -186,7 +186,7 @@ def board():
               [x_min + 2, y_max - 0.3], [x_min + 2, y_min + 1.2]]
     patch = patches.Polygon(xy=points, closed=True, fill=False, ec='green', linewidth=1)
     ax1.add_patch(patch)
-    ax1.text(x_min + 2.1, y_max - 0.5, board_txt, c='lime')
+    ax1.text(x_min + 2.1, y_max - 0.35, board_txt, c='lime', verticalalignment="top")
 
 
 def load_file():
@@ -217,28 +217,31 @@ def exe_command():
                 elif cmd == "title_clear":
                     title = ""
                 elif cmd == "title":
-                    title = opd.strip('"')
+                    title = str(opd).strip('"')
                 elif cmd == "balloon_up_clear":
                     balloon_up_txt = ""
                 elif cmd == "balloon_up":
-                    balloon_up_txt = opd.strip('"')
+                    balloon_up_txt = str(opd).strip('"')
                 elif cmd == "balloon_up_append":
                     balloon_up_txt = balloon_up_txt + "\n"
-                    balloon_up_txt = balloon_up_txt + opd.strip('"')
+                    if str(opd) != "nan":
+                        balloon_up_txt = balloon_up_txt + str(opd).strip('"')
                 elif cmd == "board_clear":
                     board_txt = ""
                 elif cmd == "board":
-                    board_txt = opd.strip('"')
+                    board_txt = str(opd).strip('"')
                 elif cmd == "board_append":
                     board_txt = board_txt + "\n"
-                    board_txt = board_txt + opd.strip('"')
+                    if str(opd) != "nan":
+                        board_txt = board_txt + str(opd).strip('"')
                 elif cmd == "balloon_right_clear":
                     balloon_right_txt = ""
                 elif cmd == "balloon_right":
-                    balloon_right_txt = opd.strip('"')
+                    balloon_right_txt = str(opd).strip('"')
                 elif cmd == "balloon_right_append":
                     balloon_right_txt = balloon_right_txt + "\n"
-                    balloon_right_txt = balloon_right_txt + opd.strip('"')
+                    if str(opd) != "nan":
+                        balloon_right_txt = balloon_right_txt + str(opd).strip('"')
                 elif cmd == "hi":
                     hi()
                 elif cmd == "presentation":
