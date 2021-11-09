@@ -59,9 +59,9 @@ def head(ax, x, y, s):
     ax.add_patch(ear_l)
     hd = patches.Rectangle(xy=(x - s * 2 / 2, y - s * 1 / 2), width=s * 2, height=s * 1, fc='lightgray', ec='darkgray')
     ax.add_patch(hd)
-    eye_r = patches.Circle(xy=(x + s * 0.5, y + s * 0.1), radius=s * 0.25, fc='yellow', ec='orange')
+    eye_r = patches.Circle(xy=(x + s * 0.5, y + s * 0.1), radius=s * 0.25, fc=eyes_color, ec='orange')
     ax.add_patch(eye_r)
-    eye_l = patches.Circle(xy=(x - s * 0.5, y + s * 0.1), radius=s * 0.25, fc='yellow', ec='orange')
+    eye_l = patches.Circle(xy=(x - s * 0.5, y + s * 0.1), radius=s * 0.25, fc=eyes_color, ec='orange')
     ax.add_patch(eye_l)
     mouse = patches.Rectangle(xy=(x - s * 0.4 / 2, y - s * 0.3), width=s * 0.4, height=s * 0.05,
                               fc='dimgray', ec='dimgray')
@@ -84,79 +84,6 @@ def robot(ax, x, y, s):
     head(ax, x, y, s)
     arm_right(ax, x, y, s, arm_th_deg_r)
     arm_left(ax, x, y, s, arm_th_deg_l)
-
-
-def left():
-    global x_robot
-    x_robot = x_left
-
-
-def center():
-    global x_robot
-    x_robot = x_center
-
-
-def right():
-    global x_robot
-    x_robot = x_right
-
-
-def raise_hand_r():
-    global arm_th_deg_r, on_bye
-    on_bye = False
-    arm_th_deg_r = 80.
-
-
-def raise_hand_l():
-    global on_bye, arm_th_deg_l
-    on_bye = False
-    arm_th_deg_l = 100.
-
-
-def lower_hand_r():
-    global on_bye, arm_th_deg_r
-    on_bye = False
-    arm_th_deg_r = arm_th_deg_r_default
-
-
-def lower_hand_l():
-    global on_bye, arm_th_deg_l
-    on_bye = False
-    arm_th_deg_l = arm_th_deg_l_default
-
-
-def bye():
-    global on_bye, dsp_txt
-    on_bye = True
-    dsp_txt = "Bye"
-
-
-def hi():
-    global on_bye, on_balloon_up, x_robot, dsp_txt
-    reset()
-    raise_hand_l()
-    dsp_txt = "Hi!"
-    on_balloon_up = True
-
-
-def presentation():
-    global on_balloon_right, on_board, x_robot
-    reset()
-    x_robot = x_left
-    on_balloon_right = True
-    on_board = True
-
-
-def reset():
-    global on_bye, on_balloon_up, on_balloon_right, on_board, x_robot, dsp_txt
-    on_bye = False
-    on_balloon_up = False
-    on_balloon_right = False
-    on_board = False
-    lower_hand_r()
-    lower_hand_l()
-    dsp_txt = "Py"
-    x_robot = x_center
 
 
 def balloon_up():
@@ -203,6 +130,121 @@ def load_file():
         presentation()
 
 
+def left():
+    global x_robot
+    x_robot = x_left
+
+
+def center():
+    global x_robot
+    x_robot = x_center
+
+
+def right():
+    global x_robot
+    x_robot = x_right
+
+
+def raise_hand_r():
+    global arm_th_deg_r, on_bye
+    on_bye = False
+    arm_th_deg_r = 80.
+
+
+def raise_hand_l():
+    global on_bye, arm_th_deg_l
+    on_bye = False
+    arm_th_deg_l = 100.
+
+
+def lower_hand_r():
+    global on_bye, arm_th_deg_r
+    on_bye = False
+    arm_th_deg_r = arm_th_deg_r_default
+
+
+def lower_hand_l():
+    global on_bye, arm_th_deg_l
+    on_bye = False
+    arm_th_deg_l = arm_th_deg_l_default
+
+
+def reset():
+    global on_bye, on_balloon_up, on_balloon_right, on_board, dsp_txt
+    on_bye = False
+    lower_hand_r()
+    lower_hand_l()
+    dsp_txt = "Py"
+
+
+def bye():
+    global on_bye, dsp_txt
+    reset()
+    on_bye = True
+    dsp_txt = "Bye"
+
+
+def hi():
+    global on_bye, on_balloon_up, x_robot, dsp_txt
+    reset()
+    raise_hand_l()
+    dsp_txt = "Hi!"
+
+
+def ok():
+    global on_bye, on_balloon_up, x_robot, dsp_txt
+    raise_hand_r()
+    raise_hand_l()
+    dsp_txt = "Ok!"
+
+
+def eyes_col(col):
+    global eyes_color
+    if col == "yellow":
+        eyes_color = "yellow"
+    elif col == "gray":
+        eyes_color = "gray"
+    elif col == "red":
+        eyes_color = "red"
+    else:
+        eyes_color = "yellow"
+
+
+def greet():
+    global on_balloon_up, on_balloon_right, on_board, x_robot
+    reset()
+    x_robot = x_center
+    on_balloon_up = True
+    on_balloon_right = False
+    on_board = False
+
+
+def presentation():
+    global on_balloon_up, on_balloon_right, on_board, x_robot
+    reset()
+    x_robot = x_left
+    on_balloon_up = False
+    on_balloon_right = True
+    on_board = True
+
+
+def hide():
+    global on_balloon_up, on_balloon_right, on_board
+    on_balloon_up = False
+    on_balloon_right = False
+    on_board = False
+
+
+def play():
+    global on_play
+    on_play = True
+
+
+def pause():
+    global on_play
+    on_play = False
+
+
 def exe_command():
     global df, sequence_num, is_end, on_play, title, balloon_up_txt, balloon_right_txt, board_txt, wait_cnt
     if on_play:
@@ -212,7 +254,9 @@ def exe_command():
                 cmd = df.at[sequence_num, 'command']
                 opd = df.at[sequence_num, 'operand']
                 print(str(cmd) + ': ' + str(opd))
-                if cmd == "EOF":
+                if cmd == "pause":
+                    on_play = False
+                elif cmd == "EOF":
                     is_end = True
                 elif cmd == "title_clear":
                     title = ""
@@ -244,19 +288,24 @@ def exe_command():
                         balloon_right_txt = balloon_right_txt + str(opd).strip('"')
                 elif cmd == "hi":
                     hi()
-                elif cmd == "presentation":
-                    presentation()
+                elif cmd == "ok":
+                    ok()
                 elif cmd == "bye":
                     bye()
+                elif cmd == "reset":
+                    reset()
+                elif cmd == "greet":
+                    greet()
+                elif cmd == "presentation":
+                    presentation()
+                elif cmd == "hide":
+                    hide()
+                elif cmd == "eyes_color":
+                    eyes_col(str(opd).strip('"'))
                 elif cmd == "wait":
                     wait_cnt = int(opd)
         else:
             wait_cnt -= 1
-
-
-def play():
-    global on_play
-    on_play = True
 
 
 def bye_motion():
@@ -334,6 +383,8 @@ arm_th_deg_l_default = - 100
 arm_th_deg_r = arm_th_deg_r_default
 arm_th_deg_l = arm_th_deg_l_default
 
+eyes_color = "yellow"
+
 on_bye = False
 on_balloon_up = False
 on_balloon_right = False
@@ -386,6 +437,7 @@ btn_play_pause = tkinter.Button(root, text="Center", command=center)
 btn_play_pause.pack(side='left')
 btn_forward = tkinter.Button(root, text="Right", command=right)
 btn_forward.pack(side='left')
+
 btn_raise_hand_l = tkinter.Button(root, text="Raise L", command=raise_hand_l)
 btn_raise_hand_l.pack(side='left')
 btn_raise_hand_r = tkinter.Button(root, text="Raise R", command=raise_hand_r)
@@ -394,23 +446,35 @@ btn_lower_hand_l = tkinter.Button(root, text="Lower L", command=lower_hand_l)
 btn_lower_hand_l.pack(side='left')
 btn_lower_hand_r = tkinter.Button(root, text="Lower R", command=lower_hand_r)
 btn_lower_hand_r.pack(side='left')
+
 btn_hi = tkinter.Button(root, text="Hi!", command=hi)
 btn_hi.pack(side='left')
-btn_speech = tkinter.Button(root, text="Presentation", command=presentation)
-btn_speech.pack(side='left')
+btn_ok = tkinter.Button(root, text="Ok!", command=ok)
+btn_ok.pack(side='left')
 btn_bye = tkinter.Button(root, text="Bye!", command=bye)
 btn_bye.pack(side='left')
 btn_reset = tkinter.Button(root, text="Reset", command=reset)
 btn_reset.pack(side='left')
+
+btn_greet = tkinter.Button(root, text="Greet", command=greet)
+btn_greet.pack(side='left')
+btn_speech = tkinter.Button(root, text="Present", command=presentation)
+btn_speech.pack(side='left')
+btn_hide_balloons = tkinter.Button(root, text="Hide", command=hide)
+btn_hide_balloons.pack(side='left')
+
 # Entry a presentation file
 frm_ent = ttk.Labelframe(root, relief="ridge", text="Presentation file", labelanchor="n")
+frm_ent.pack(side='left')
 ent_file = tkinter.Entry(frm_ent)
 ent_file.pack(side='left')
 btn_load = tkinter.Button(frm_ent, text="Load", command=load_file)
 btn_load.pack(side='left')
 btn_play = tkinter.Button(frm_ent, text="Play", command=play)
 btn_play.pack(side='left')
-frm_ent.pack(side='left')
+btn_pause = tkinter.Button(frm_ent, text="Pause", command=pause)
+btn_pause.pack(side='left')
+
 
 # main loop
 tkinter.mainloop()
