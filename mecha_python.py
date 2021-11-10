@@ -99,7 +99,7 @@ def balloon_up():
 
 def balloon_right():
     global balloon_right_txt
-    points = [[x_min + 2, y_min + 0.3], [x_max - 0.5, y_min + 0.3], [x_max - 0.5, y_min + 1],
+    points = [[x_min + 2, y_min + 0.3], [x_max - 0.3, y_min + 0.3], [x_max - 0.3, y_min + 1],
               [x_min + 2, y_min + 1], [x_min + 2, y_min + 0.9], [x_min + 1.8, y_min + 1.2],
               [x_min + 2, y_min + 0.7]]
     patch = patches.Polygon(xy=points, closed=True, fill=False, ec='lime', linewidth=1)
@@ -109,7 +109,7 @@ def balloon_right():
 
 def board():
     global board_txt
-    points = [[x_min + 2, y_min + 1.2], [x_max - 0.5, y_min + 1.2], [x_max - 0.5, y_max - 0.3],
+    points = [[x_min + 2, y_min + 1.2], [x_max - 0.3, y_min + 1.2], [x_max - 0.3, y_max - 0.3],
               [x_min + 2, y_max - 0.3], [x_min + 2, y_min + 1.2]]
     patch = patches.Polygon(xy=points, closed=True, fill=False, ec='green', linewidth=1)
     ax1.add_patch(patch)
@@ -243,6 +243,14 @@ def play():
 def pause():
     global on_play
     on_play = False
+
+
+def replay():
+    global on_play, is_end, sequence_num, cnt
+    is_end = False
+    sequence_num = 0
+    cnt = 0
+    on_play = True
 
 
 def exe_command():
@@ -463,7 +471,7 @@ btn_speech.pack(side='left')
 btn_hide_balloons = tkinter.Button(root, text="Hide", command=hide)
 btn_hide_balloons.pack(side='left')
 
-# Entry a presentation file
+# Operation of presentation
 frm_ent = ttk.Labelframe(root, relief="ridge", text="Presentation file", labelanchor="n")
 frm_ent.pack(side='left')
 ent_file = tkinter.Entry(frm_ent)
@@ -474,7 +482,8 @@ btn_play = tkinter.Button(frm_ent, text="Play", command=play)
 btn_play.pack(side='left')
 btn_pause = tkinter.Button(frm_ent, text="Pause", command=pause)
 btn_pause.pack(side='left')
-
+btn_replay = tkinter.Button(frm_ent, text="replay", command=replay)
+btn_replay.pack(side='left')
 
 # main loop
 tkinter.mainloop()
