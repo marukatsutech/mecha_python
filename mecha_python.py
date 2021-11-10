@@ -69,18 +69,18 @@ def head(ax, x, y, s):
 
 
 def robot(ax, x, y, s):
-    ax.plot([x + s * 0.4, x + s * 0.4], [y - s * 2, y - s * 3 * 0.9], linestyle=':', c='lightgray', linewidth=2)
-    ax.plot([x - s * 0.4, x - s * 0.4], [y - s * 2, y - s * 3 * 0.9], linestyle=':', c='lightgray', linewidth=2)
-    foot_r = patches.Wedge(center=(x + s * 0.4, y - s * 3), r=0.15, theta1=0, theta2=180, fc='lightgray', ec='darkgray')
+    ax.plot([x + s * 0.4, x + s * 0.4], [y - s * 1.5, y - s * 3 * 0.9], linestyle=':', c='lightgray', linewidth=2)
+    ax.plot([x - s * 0.4, x - s * 0.4], [y - s * 1.5, y - s * 3 * 0.9], linestyle=':', c='lightgray', linewidth=2)
+    foot_r = patches.Wedge(center=(x + s * 0.4, y - s * 3), r=s * 0.3, theta1=0, theta2=180, fc='lightgray', ec='darkgray')
     ax.add_patch(foot_r)
-    foot_l = patches.Wedge(center=(x - s * 0.4, y - s * 3), r=0.15, theta1=0, theta2=180, fc='lightgray', ec='darkgray')
+    foot_l = patches.Wedge(center=(x - s * 0.4, y - s * 3), r=s * 0.3, theta1=0, theta2=180, fc='lightgray', ec='darkgray')
     ax.add_patch(foot_l)
     body = patches.Rectangle(xy=(x - s * 1 / 2, y - s * 1.9), width=s * 1, height=s * 1.2,
                              fc='lightgray', ec='darkgray')
     ax.add_patch(body)
     dsp = patches.Rectangle(xy=(x - s * 0.8 / 2, y - s * 1.4), width=s * 0.8, height=s * 0.6, fc='white', ec='darkgray')
     ax.add_patch(dsp)
-    ax.text(x, y - s * 1.2, dsp_txt, horizontalalignment="center", c='darkgray')
+    ax.text(x, y - s * 1.2, dsp_txt, horizontalalignment="center", c='darkgray', size=s * 20)
     head(ax, x, y, s)
     arm_right(ax, x, y, s, arm_th_deg_r)
     arm_left(ax, x, y, s, arm_th_deg_l)
