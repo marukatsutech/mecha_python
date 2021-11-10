@@ -1,0 +1,96 @@
+no.,command,operand,remark
+1,title,How to make python-matplotlib animations.,
+2,wait,10,
+3,balloon_up_clear,,
+4,balloon_up,Hello world. I am Mecha.Python!,
+5,greet,,
+6,hi,,
+7,wait,10,
+8,balloon_up_append,I will introduce how to make python-matplotlib animations.,
+9,wait,30,
+10,board_clear,,
+11,balloon_right_clear,,
+12,presentation,,
+13,board,# STEP 0,
+14,board_append,[Command terminal or Power shell],
+15,board_append,>pip install matplotlib,
+16,wait,10,
+17,balloon_right,"First install Matplotlib, Numpy and other libraries",
+18,balloon_right_append,with pip as needed. ,
+19,balloon_right_append, (Please see some web sites for more details.),
+20,wait,50,
+21,balloon_right_clear,,
+22,board,# STEP 1,1
+23,board_append,import numpy as np,2
+24,board_append,import matplotlib.pyplot as plt,3
+25,board_append,,4
+26,board_append,fig = plt.figure(),5
+27,board_append,ax1 = fig.add_subplot(111),6
+28,board_append,"x = np.linspace(0, 10, 100)",7
+29,board_append,y = np.sin(x),8
+30,board_append,"ax1.plot(x, y)",9
+31,board_append,plt.show(),10
+32,balloon_right,Please code as above. (It's still not animation.),
+33,balloon_right_append,Then let's check the result.,
+34,pause,,
+35,balloon_right_clear,,
+36,board,# STEP 2,1
+37,board_append,import numpy as np,2
+38,board_append,import matplotlib.pyplot as plt,3
+39,board_append,import matplotlib.animation as animation,4
+40,board_append,,5
+41,board_append,def update(f):,6
+42,board_append,    y = np.sin(x - f),7
+43,board_append,"    ax1.plot(x, y)",8
+44,board_append,,9
+45,balloon_right,Please modify as above. (To be continued.),
+46,wait,30,
+47,balloon_right_clear,,
+48,board,# STEP 2 (continuation),1
+49,board_append,fig = plt.figure(),2
+50,board_append,ax1 = fig.add_subplot(111),3
+51,board_append,ax1.grid(),4
+52,board_append,"x = np.linspace(0, 10, 100)",5
+53,board_append,,6
+54,board_append,"anim = animation.FuncAnimation(fig, update, interval=100)",7
+55,board_append,plt.show(),8
+56,balloon_right,Let's check the result!,
+57,pause,,
+58,eyes_color,gray,
+59,balloon_right,Oops!,
+60,wait,30,
+61,eyes_color,yellow,
+62,balloon_right_clear,,
+63,board,# STEP 3,1
+64,board_append,def update(f):,2
+65,board_append,    ax1.cla(),3
+66,board_append,    y = np.sin(x - f),4
+67,board_append,"    ax1.plot(x, y)",5
+68,balloon_right,"I added ""ax1.cla()"" in ""update"". Then....",
+69,pause,,
+70,eyes_color,gray,
+71,balloon_right,"It got better but the grid of ""ax1"" was cleared too...",
+72,wait,30,
+73,eyes_color,yellow,
+74,balloon_right_clear,,
+75,board,# STEP 4,1
+76,board_append,def update(f):,2
+77,board_append,    ax1.cla(),3
+78,board_append,    ax1.grid(),4
+79,board_append,    y = np.sin(x - f),5
+80,board_append,"    ax1.plot(x, y)",6
+81,balloon_right,"I added ""ax1.grid()"" in ""update"". Then....",
+82,pause,,
+83,ok,,
+84,balloon_right,Completed!!!,
+85,wait,30,
+86,reset,,
+87,balloon_right,This way needs to clear and redraw a plot in every interval.,
+88,balloon_right_append,So it acts sluggish but easy to code.,
+89,balloon_right_append,I will introduce the other way in next video.,
+90,wait,50,
+91,balloon_right,That's all for now.,
+92,balloon_right_append,Thanks for watching. Bye bye !,
+93,wait,10,
+94,bye,,
+95,EOF,,
