@@ -171,6 +171,12 @@ def lower_hand_l():
     arm_th_deg_l = arm_th_deg_l_default
 
 
+def pointing():
+    global arm_th_deg_r, on_bye
+    on_bye = False
+    arm_th_deg_r = 30.
+
+
 def reset():
     global on_bye, on_balloon_up, on_balloon_right, on_board, dsp_txt
     on_bye = False
@@ -237,6 +243,41 @@ def hide():
     on_board = False
 
 
+def show_ticks():
+    global ticks_on
+    ticks_on = True
+
+
+def hide_ticks():
+    global ticks_on
+    ticks_on = False
+
+
+def show_grid():
+    global grid_on
+    grid_on = True
+
+
+def hide_grid():
+    global grid_on
+    grid_on = False
+
+
+def show_back_anime():
+    global back_anime_on
+    back_anime_on = True
+
+
+def hide_back_anime():
+    global back_anime_on
+    back_anime_on = False
+
+
+def back_ground_animation(cyc):
+    y = np.sin(x_back - cyc) + (y_max -y_min) / 2.
+    ax1.plot(x_back, y)
+
+
 def play():
     global on_play
     on_play = True
@@ -248,11 +289,14 @@ def pause():
 
 
 def replay():
-    global on_play, is_end, sequence_num, cnt
+    global on_play, is_end, sequence_num, cnt, ticks_on, grid_on, back_anime_on
     is_end = False
     sequence_num = 0
     cnt = 0
     on_play = True
+    ticks_on = False
+    grid_on = False
+    back_anime_on = False
 
 
 def exe_command():
@@ -312,6 +356,20 @@ def exe_command():
                     hide()
                 elif cmd == "eyes_color":
                     eyes_col(str(opd).strip('"'))
+                elif cmd == "pointing":
+                    pointing()
+                elif cmd == "show_ticks":
+                    show_ticks()
+                elif cmd == "hide_ticks":
+                    show_ticks()
+                elif cmd == "show_grid":
+                    show_grid()
+                elif cmd == "hide_grid":
+                    hide_grid()
+                elif cmd == "show_back_anime":
+                    show_back_anime()
+                elif cmd == "hide_back_anime":
+                    hide_back_anime()
                 elif cmd == "wait":
                     wait_cnt = int(opd)
         else:
@@ -339,8 +397,11 @@ def bye_motion():
 def set_axis():
     ax1.set_xlim(x_min, x_max)
     ax1.set_ylim(y_min, y_max)
-    ax1.set_xticks([])
-    ax1.set_yticks([])
+    if not ticks_on:
+        ax1.set_xticks([])
+        ax1.set_yticks([])
+    if grid_on:
+        ax1.grid()
     ax1.set_title(title, c='dimgray')
     ax1.set_aspect('equal')
     ax1.set_facecolor('#002000')
@@ -351,6 +412,8 @@ def update(f):
     ax1.cla()
     set_axis()
     # Update items
+    if back_anime_on:
+        back_ground_animation(f)
     ax1.text(x_min, y_max * 0.95, ' file:' + file_name + ' cnt=' + str(cnt), c='lime')
     bye_motion()
     robot(ax1, x_robot, y_robot, s_robot)
@@ -379,6 +442,9 @@ cnt = 0
 on_play = False
 sequence_num = 0
 is_end = False
+ticks_on = False
+grid_on = False
+back_anime_on = False
 
 x_center = 4.
 y_center = 2.
@@ -413,9 +479,12 @@ file_name = ""
 title_default = "Mecha.Python"
 title = title_default
 
-# create dataset
+# For back ground animation
+x_back = np.linspace(0, 10, 200)
+
+# Create dataset
 dummy = pd.Series(list('abc'))
-# create dummy variables
+# Create dummy variables
 df = pd.get_dummies(dummy)
 
 # Generate tkinter

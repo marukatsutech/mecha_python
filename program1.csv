@@ -11,86 +11,101 @@ no.,command,operand,remark
 10,board_clear,,
 11,balloon_right_clear,,
 12,presentation,,
-13,board,# STEP 0,
-14,board_append,[Command terminal or Power shell],
-15,board_append,>pip install matplotlib,
-16,wait,10,
-17,balloon_right,"First install Matplotlib, Numpy and other libraries",
-18,balloon_right_append,with pip as needed. ,
-19,balloon_right_append, (Please see some web sites for more details.),
-20,wait,50,
-21,balloon_right_clear,,
-22,board,# STEP 1,1
-23,board_append,import numpy as np,2
-24,board_append,import matplotlib.pyplot as plt,3
-25,board_append,,4
-26,board_append,fig = plt.figure(),5
-27,board_append,ax1 = fig.add_subplot(111),6
-28,board_append,"x = np.linspace(0, 10, 100)",7
-29,board_append,y = np.sin(x),8
-30,board_append,"ax1.plot(x, y)",9
-31,board_append,plt.show(),10
-32,balloon_right,Please code as above. (It's still not animation.),
-33,balloon_right_append,Then let's check the result.,
-34,pause,,
-35,balloon_right_clear,,
-36,board,# STEP 2,1
-37,board_append,import numpy as np,2
-38,board_append,import matplotlib.pyplot as plt,3
-39,board_append,import matplotlib.animation as animation,4
-40,board_append,,5
-41,board_append,def update(f):,6
-42,board_append,    y = np.sin(x - f),7
-43,board_append,"    ax1.plot(x, y)",8
-44,board_append,,9
-45,balloon_right,Please modify as above. (To be continued.),
-46,wait,30,
-47,balloon_right_clear,,
-48,board,# STEP 2 (continuation),1
-49,board_append,fig = plt.figure(),2
-50,board_append,ax1 = fig.add_subplot(111),3
-51,board_append,ax1.grid(),4
-52,board_append,"x = np.linspace(0, 10, 100)",5
-53,board_append,,6
-54,board_append,"anim = animation.FuncAnimation(fig, update, interval=100)",7
-55,board_append,plt.show(),8
-56,balloon_right,Let's check the result!,
-57,pause,,
-58,eyes_color,gray,
-59,balloon_right,Oops!,
-60,wait,30,
-61,eyes_color,yellow,
-62,balloon_right_clear,,
-63,board,# STEP 3,1
-64,board_append,def update(f):,2
-65,board_append,    ax1.cla(),3
-66,board_append,    y = np.sin(x - f),4
-67,board_append,"    ax1.plot(x, y)",5
-68,balloon_right,"I added ""ax1.cla()"" in ""update"". Then....",
-69,pause,,
-70,eyes_color,gray,
-71,balloon_right,"It got better but the grid of ""ax1"" was cleared too...",
-72,wait,30,
-73,eyes_color,yellow,
-74,balloon_right_clear,,
-75,board,# STEP 4,1
-76,board_append,def update(f):,2
-77,board_append,    ax1.cla(),3
-78,board_append,    ax1.grid(),4
-79,board_append,    y = np.sin(x - f),5
-80,board_append,"    ax1.plot(x, y)",6
-81,balloon_right,"I added ""ax1.grid()"" in ""update"". Then....",
-82,pause,,
-83,ok,,
-84,balloon_right,Completed!!!,
-85,wait,30,
-86,reset,,
-87,balloon_right,This way needs to clear and redraw a plot in every interval.,
-88,balloon_right_append,So it acts sluggish but easy to code.,
-89,balloon_right_append,I will introduce the other way in next video.,
-90,wait,50,
-91,balloon_right,That's all for now.,
-92,balloon_right_append,Thanks for watching. Bye bye !,
-93,wait,10,
-94,bye,,
-95,EOF,,
+13,pointing,,
+14,board,# STEP 0,
+15,board_append,[Command terminal or Power shell],
+16,board_append,>pip install matplotlib,
+17,wait,10,
+18,reset,,
+19,balloon_right,"First install Matplotlib, Numpy and other libraries",
+20,balloon_right_append,with pip as needed.,
+21,balloon_right_append,(Please see some web sites for more details.),
+22,wait,50,
+23,balloon_right_clear,,
+24,pointing,,
+25,board,# STEP 1,1
+26,board_append,import numpy as np,2
+27,board_append,import matplotlib.pyplot as plt,3
+28,board_append,,4
+29,board_append,fig = plt.figure(),5
+30,board_append,ax1 = fig.add_subplot(111),6
+31,board_append,"x = np.linspace(0, 10, 100)",7
+32,board_append,y = np.sin(x),8
+33,board_append,"ax1.plot(x, y)",9
+34,board_append,plt.show(),10
+35,reset,,
+36,balloon_right,Please code as above. (It's still not animation.),
+37,balloon_right_append,Then let's check the result.,
+38,pause,,
+39,balloon_right_clear,,
+40,pointing,,
+41,board,# STEP 2,1
+42,board_append,import numpy as np,2
+43,board_append,import matplotlib.pyplot as plt,3
+44,board_append,import matplotlib.animation as animation,4
+45,board_append,,5
+46,board_append,def update(f):,6
+47,board_append,    y = np.sin(x - f),7
+48,board_append,"    ax1.plot(x, y)",8
+49,board_append,,9
+50,balloon_right,Please modify as above. (To be continued.),
+51,wait,30,
+52,balloon_right_clear,,
+53,board,# STEP 2 (continuation),1
+54,board_append,fig = plt.figure(),2
+55,board_append,ax1 = fig.add_subplot(111),3
+56,board_append,ax1.grid(),4
+57,board_append,"x = np.linspace(0, 10, 100)",5
+58,board_append,,6
+59,board_append,"anim = animation.FuncAnimation(fig, update, interval=100)",7
+60,board_append,plt.show(),8
+61,reset,,
+62,balloon_right,Let's check the result!,
+63,pause,,
+64,eyes_color,gray,
+65,balloon_right,Oops!,
+66,wait,30,
+67,eyes_color,yellow,
+68,balloon_right_clear,,
+69,pointing,,
+70,board,# STEP 3,1
+71,board_append,def update(f):,2
+72,board_append,    ax1.cla(),3
+73,board_append,    y = np.sin(x - f),4
+74,board_append,"    ax1.plot(x, y)",5
+75,reset,,
+76,balloon_right,"I added ""ax1.cla()"" in ""update"". Then....",
+77,pause,,
+78,eyes_color,gray,
+79,balloon_right,"It got better but the grid of ""ax1"" was cleared too...",
+80,wait,30,
+81,eyes_color,yellow,
+82,balloon_right_clear,,
+83,pointing,,
+84,board,# STEP 4,1
+85,board_append,def update(f):,2
+86,board_append,    ax1.cla(),3
+87,board_append,    ax1.grid(),4
+88,board_append,    y = np.sin(x - f),5
+89,board_append,"    ax1.plot(x, y)",6
+90,reset,,
+91,balloon_right,"I added ""ax1.grid()"" in ""update"". Then....",
+92,pause,,
+93,ok,,
+94,balloon_right,Completed!!!,
+95,wait,30,
+96,reset,,
+97,balloon_right,This way needs to clear and redraw a plot in every interval.,
+98,balloon_right_append,So it acts sluggish but easy to code.,
+99,balloon_right_append,I will introduce the other way in next program.,
+100,wait,50,
+101,balloon_right,That's all for now.,
+102,balloon_right_append,Thanks for watching. Bye bye !,
+103,wait,10,
+104,bye,,
+105,show_ticks,,
+106,wait,10,
+107,show_grid,,
+108,wait,10,
+109,show_back_anime,,
+110,EOF,,
