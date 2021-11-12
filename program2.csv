@@ -85,8 +85,8 @@ no.,command,operand,remark
 84,board_append,<NG>,5
 85,board_append,"sine_curve = ax1.plot(x, y)  # Without comma",6
 86,reset,,
-87,balloon_right,"I missed comma at ""sine_curve""",
-88,balloon_right,"I revised ""sine_curve"" to ""sine_curve,"". Then....",
+87,balloon_right,"I missed comma at ""sine_curve"".",
+88,balloon_right_append,"I revised ""sine_curve"" to ""sine_curve,"". Then....",
 89,pause,,
 90,ok,,
 91,balloon_right,Completed!!!,
@@ -96,13 +96,13 @@ no.,command,operand,remark
 95,pointing,,
 96,board,# Appendix,1
 97,board_append,<Plot>,2
-98,board_append,"pt, = ax.plot(x, y)",3
+98,board_append,"pt, = ax.plot(x, y)  # With comma",3
 99,board_append,and pt.set_ydata(new_y),4
 100,board_append,<Text>,5
-101,board_append,"txt = ax.text(x, y, 'AAA')",6
+101,board_append,"txt = ax.text(x, y, 'AAA')  # Without comma",6
 102,board_append,and line.set_text('BBB'),7
 103,board_append,<Shape of patches (ex. circle)>,8
-104,board_append,"c= patches.Circle(xy=(p), radius=1)",9
+104,board_append,"c= patches.Circle(xy=(p), radius=1)  # Without comma",9
 105,board_append,and c.set_center(new_p),10
 106,balloon_right,"This way is faster than  ""clear and redraw way"".",
 107,balloon_right_append,But you have to learn a lot of methods as like above.,
