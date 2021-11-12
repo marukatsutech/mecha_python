@@ -23,7 +23,7 @@ no.,command,operand,remark
 22,board_append,ax = fig.add_subplot(111),9
 23,board_append,"pt, = ax.plot(x, y)",10
 24,board_append,,
-25,balloon_right,"I introduced ""ax,cla() and re-plot"" way to make an animation",
+25,balloon_right,"I introduced ""ax.cla() and re-plot"" way to make an animation",
 26,balloon_right_append,on previous program.,
 27,balloon_right_append,"I will introduce ""object oriented interface"" on this program.",
 28,wait,50,
