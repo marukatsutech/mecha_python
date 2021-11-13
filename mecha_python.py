@@ -80,9 +80,10 @@ def robot(ax, x, y, s):
     body = patches.Rectangle(xy=(x - s * 1 / 2, y - s * 1.9), width=s * 1, height=s * 1.2,
                              fc='lightgray', ec='darkgray')
     ax.add_patch(body)
-    dsp = patches.Rectangle(xy=(x - s * 0.8 / 2, y - s * 1.4), width=s * 0.8, height=s * 0.6, fc='white', ec='darkgray')
+    dsp = patches.Rectangle(xy=(x - s * 0.8 / 2, y - s * 1.4), width=s * 0.8, height=s * 0.6, fc='white',
+                            ec='darkgray')
     ax.add_patch(dsp)
-    ax.text(x, y - s * 1.2, dsp_txt, horizontalalignment="center", c='darkgray', size=s * 20)
+    ax.text(x, y - s * 1.2, dsp_txt, horizontalalignment="center", c='darkgray', size=s * font_size * 2.5)
     head(ax, x, y, s)
     arm_right(ax, x, y, s, arm_th_deg_r)
     arm_left(ax, x, y, s, arm_th_deg_l)
@@ -96,7 +97,7 @@ def balloon_up():
     patch = patches.Polygon(xy=points, closed=True, fill=False, ec='lime', linewidth=1)
     ax1.add_patch(patch)
     ax1.text((x_max - x_min) / 2, y_max - 0.35, balloon_up_txt, horizontalalignment="center",
-             verticalalignment="top", c='lime')
+             verticalalignment="top", c='lime', size=font_size)
 
 
 def balloon_right():
@@ -106,7 +107,7 @@ def balloon_right():
               [x_min + 2, y_min + 0.7]]
     patch = patches.Polygon(xy=points, closed=True, fill=False, ec='lime', linewidth=1)
     ax1.add_patch(patch)
-    ax1.text(x_min + 2.1, y_min + 0.95, balloon_right_txt, c='lime', verticalalignment="top")
+    ax1.text(x_min + 2.1, y_min + 0.95, balloon_right_txt, c='lime', verticalalignment="top", size=font_size)
 
 
 def board():
@@ -115,7 +116,7 @@ def board():
               [x_min + 2, y_max - 0.3], [x_min + 2, y_min + 1.2]]
     patch = patches.Polygon(xy=points, closed=True, fill=False, ec='green', linewidth=1)
     ax1.add_patch(patch)
-    ax1.text(x_min + 2.1, y_max - 0.35, board_txt, c='lime', verticalalignment="top")
+    ax1.text(x_min + 2.1, y_max - 0.35, board_txt, c='lime', verticalalignment="top", size=font_size)
 
 
 def load_file():
@@ -274,7 +275,7 @@ def hide_back_anime():
 
 
 def back_ground_animation(cyc):
-    y = np.sin(x_back - cyc) + (y_max -y_min) / 2.
+    y = np.sin(x_back - cyc) + (y_max - y_min) / 2.
     ax1.plot(x_back, y)
 
 
@@ -408,13 +409,13 @@ def set_axis():
 
 
 def update(f):
-    global cnt
+    global cnt, font_size
     ax1.cla()
     set_axis()
     # Update items
     if back_anime_on:
         back_ground_animation(f)
-    ax1.text(x_min, y_max * 0.95, ' file:' + file_name + ' cnt=' + str(cnt), c='lime')
+    ax1.text(x_min, y_max * 0.95, ' file:' + file_name + ' cnt=' + str(cnt), c='lime', size=font_size)
     bye_motion()
     robot(ax1, x_robot, y_robot, s_robot)
     # Speech balloon up
@@ -430,6 +431,9 @@ def update(f):
     exe_command()
     if on_play:
         cnt += 1
+
+    screen_height = root.winfo_height()
+    font_size = int((y_max - y_min) * 2.6) * screen_height / 565
 
 
 # Global variables
@@ -453,6 +457,7 @@ x_right = 7.
 x_robot = x_center
 y_robot = y_center
 s_robot = 0.5     # Scale
+font_size = int((y_max - y_min) * 2.6)
 
 arm_th_deg_r_default = - 80
 arm_th_deg_l_default = - 100
@@ -492,13 +497,13 @@ root = tkinter.Tk()
 root.title("Mecha.Python")
 
 # Generate figure and axes
-fig = Figure(figsize=(8, 4), facecolor="lightgray")
+fig = Figure(facecolor="lightgray")
 ax1 = fig.add_subplot(111)
 set_axis()
 
 # Embed a figure in canvas
 canvas = FigureCanvasTkAgg(fig, root)
-canvas.get_tk_widget().pack()
+canvas.get_tk_widget().pack(expand=True, fill='both')
 
 # Animation
 anim = animation.FuncAnimation(fig, update, interval=100)
