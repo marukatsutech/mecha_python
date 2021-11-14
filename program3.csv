@@ -1,0 +1,171 @@
+no.,command,operand,remark
+1,title,How to make python-matplotlib animations.,
+2,wait,10,
+3,balloon_up_clear,,
+4,balloon_up,Hello world. I am Mecha.Python!,
+5,greet,,
+6,hi,,
+7,wait,10,
+8,balloon_up_append,I will introduce how to make python-matplotlib animations.,
+9,wait,30,
+10,board_clear,,
+11,balloon_right_clear,,
+12,presentation,,
+13,pointing,,
+14,board,# How to embed matplotlib-animations in tkinter,1
+15,board_append,,2
+16,board_append,Tkinter,3
+17,board_append, (the standard Python interface to the Tcl/Tk GUI toolkit),4
+18,board_append,"- Button, Check button, Radio button",5
+19,board_append,"- Label, Message, Entry, Canvas",6
+20,board_append,- Scale (slider),7
+21,board_append,- Spinbox,8
+22,board_append,- Frame,9
+23,board_append,etc.,10
+24,board_append,,
+25,reset,,
+26,balloon_right,I will introduce how to embed matplotlib-animations in tkinter,
+27,balloon_right_append,on this program.,
+28,balloon_right_append,You can make interactive animations with matplotlib and tkinter.,
+29,wait,50,
+30,balloon_right_clear,,
+31,pointing,,
+32,board,# STEP 1,1
+33,board_append,import numpy as np,2
+34,board_append,import matplotlib.pyplot as plt,3
+35,board_append,import matplotlib.animation as animation,4
+36,board_append,,5
+37,board_append,def update(f):,6
+38,board_append,    y1 = np.sin(x - f),7
+39,board_append,    sine_curve.set_ydata(y1),8
+40,board_append,,9
+41,board_append,(To be continued.),10
+42,pointing,,
+43,balloon_right,Please code as above. ,
+44,balloon_right_append,(It's same  as  the sample of previous program.),
+45,balloon_right_append,,
+46,wait,50,
+47,board,# STEP 1 (continuation),1
+48,board_append,fig = plt.figure(),2
+49,board_append,ax1 = fig.add_subplot(111),3
+50,board_append,ax1.grid(),4
+51,board_append,"x = np.linspace(0, 10, 100)",5
+52,board_append,y = np.sin(x),6
+53,board_append,"sine_curve, = ax1.plot(x, y)",7
+54,board_append,,8
+55,board_append,"anim = animation.FuncAnimation(fig, update, interval=100)",9
+56,board_append,plt.show(),10
+57,reset,,
+58,wait,50,
+59,pointing,,
+60,balloon_right_clear,,
+61,board,# STEP 2,1
+62,board_append,"1) Change ""import matplotlib.pyplot as plt"" to ",2
+63,board_append,"    ""from matplotlib.figure import Figure"".",3
+64,board_append,2) Add import to embed matplotlib in tkinter as below.,4
+65,board_append,"  ""from matplotlib.backends.backend_tkagg \",5
+66,board_append,"   import FigureCanvasTkAgg"".",6
+67,board_append,"3) Change ""fig = plt.figure()"" to ""fig = Figure()"".",7
+68,board_append,"4) Add import to tkinter  "" import tkinter as tk"".",8
+69,board_append,,9
+70,board_append,(To be continued.),10
+71,balloon_right,Please modify as above.,
+72,wait,50,
+73,board,# STEP 2 (continuation),1
+74,board_append,5) Add code as below.,2
+75,board_append,"   (After ""sine_curve, = ax1.plot(x, y)"".)",3
+76,board_append,,4
+77,board_append,root = tk.Tk(),5
+78,board_append,"root.title(""Sample3"")",6
+79,board_append,"canvas = FigureCanvasTkAgg(fig, root)",7
+80,board_append,canvas.get_tk_widget().pack(),8
+81,board_append,,9
+82,board_append,"6) Change ""plt.show()"" to ""root.mainloop()"".",10
+83,wait,30,
+84,balloon_right,"You can call tkinter with ""Tk()"" and ""mainloop()"",",
+85,balloon_right_append,and you can relate matplot-graph to widget as canvas ,
+86,balloon_right_append,"with ""FigureCanvasTkAgg"".",
+87,wait,40,
+88,balloon_right,"And you can add widget in tkinter with ""pack()"".",
+89,balloon_right_append,,
+90,balloon_right_append,"Then, check the result!",
+91,pause,,
+92,balloon_right,It is almost same result of just matplotlib,
+93,balloon_right_append, (Only toolbar disappeared).,
+94,balloon_right_append,Do not warry. I'm moving on next step.,
+95,wait,30,
+96,balloon_right_clear,,
+97,pointing,,
+98,board,# STEP 3,1
+99,board_append,"   (After ""canvas.get_tk_widget().pack()"".)",2
+100,board_append,,3
+101,board_append,"btn = tk.Button(root, text=""Play/Pause"")",4
+102,board_append,btn.pack(),5
+103,balloon_right,Add code as above.,
+104,balloon_right_append,"Then, check the result!",
+105,pause,,
+106,reset,,
+107,balloon_right,A button was added.,
+108,balloon_right_append,But the button does not work!,
+109,balloon_right_append,Do not warry. I'm moving on next step.,
+110,wait,30,
+111,reset,,
+112,balloon_right_clear,,
+113,pointing,,
+114,board,# STEP 4,1
+115,board_append,"1) Add ""on_play"" flag to switch play and pause the animation.",2
+116,board_append,   on_play = False,3
+117,board_append,,4
+118,board_append,"2) Modify ""update"" function as below.",5
+119,board_append,def update(f):,6
+120,board_append,    if on_play:,7
+121,board_append,        y1 = np.sin(x - f),8
+122,board_append,        sine_curve.set_ydata(y1),9
+123,board_append,(To be continued.),10
+124,balloon_right,Please modify the code as above.,
+125,wait,50,
+126,board,# STEP 4  (continuation),1
+127,board_append,"3) Add ""switch"" function as below.",2
+128,board_append,def switch():,3
+129,board_append,    global on_play,4
+130,board_append,    if on_play:,5
+131,board_append,        on_play = False,6
+132,board_append,    else:,7
+133,board_append,        on_play = True,8
+134,board_append,"4) Add ""command=switch at ""Button"" as below.",9
+135,board_append,"btn = tk.Button(root, text=""Play/Pause"", command=switch)",10
+136,reset,,
+137,wait,30,
+138,balloon_right_append,"Then, check the result!",
+139,pause,,
+140,reset,,
+141,balloon_right,It works!,
+142,ok,,
+143,wait,30,
+144,reset,,
+145,pointing,,
+146,board,# STEP 5,1
+147,board_append,"1) Change ""import FigureCanvasTkAgg"" to ",2
+148,board_append,"      (FigureCanvasTkAgg, NavigationToolbar2Tk).",3
+149,board_append,2) Add code as below.,4
+150,board_append,"toolbar = NavigationToolbar2Tk(canvas, root)",5
+151,board_append,canvas.get_tk_widget().pack(),6
+152,board_append,"3) Add ""expand=True, fill='both'"" as below.",7
+153,board_append,"canvas.get_tk_widget().pack(expand=True, fill='both')",8
+154,board_append,,9
+155,board_append,,10
+156,balloon_right,Please modify the code as you needed.,
+157,balloon_right_append,(to add toolbar and adjust graph-size with window-size),
+158,balloon_right_append,,
+159,wait,50,
+160,balloon_right,That's all. Please see my other videos or codes in github,
+161,balloon_right_append,"if want know more. Enjoy to make ""Matplotlib-animations"".",
+162,balloon_right_append,Thanks for watching. Bye bye !,
+163,wait,10,
+164,bye,,
+165,show_ticks,,
+166,wait,10,
+167,show_grid,,
+168,wait,10,
+169,show_back_anime,,
+170,EOF,,
