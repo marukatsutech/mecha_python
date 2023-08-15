@@ -280,29 +280,29 @@ def back_ground_animation(cyc):
 
 
 def play():
-    global on_play
-    on_play = True
+    global is_play
+    is_play = True
 
 
 def pause():
-    global on_play
-    on_play = False
+    global is_play
+    is_play = False
 
 
 def replay():
-    global on_play, is_end, sequence_num, cnt, ticks_on, grid_on, back_anime_on
+    global is_play, is_end, sequence_num, cnt, ticks_on, grid_on, back_anime_on
     is_end = False
     sequence_num = 0
     cnt = 0
-    on_play = True
+    is_play = True
     ticks_on = False
     grid_on = False
     back_anime_on = False
 
 
 def exe_command():
-    global df, sequence_num, is_end, on_play, title, balloon_up_txt, balloon_right_txt, board_txt, wait_cnt
-    if on_play:
+    global df, sequence_num, is_end, is_play, title, balloon_up_txt, balloon_right_txt, board_txt, wait_cnt
+    if is_play:
         if wait_cnt == 0:
             if not is_end:
                 sequence_num += 1
@@ -310,7 +310,7 @@ def exe_command():
                 opd = df.at[sequence_num, 'operand']
                 print(str(cmd) + ': ' + str(opd))
                 if cmd == "pause":
-                    on_play = False
+                    is_play = False
                 elif cmd == "EOF":
                     is_end = True
                 elif cmd == "title_clear":
@@ -429,7 +429,7 @@ def update(f):
         board()
 
     exe_command()
-    if on_play:
+    if is_play:
         cnt += 1
 
     screen_height = root.winfo_height()
@@ -443,7 +443,7 @@ y_min = 0.
 y_max = 4.
 
 cnt = 0
-on_play = False
+is_play = False
 sequence_num = 0
 is_end = False
 ticks_on = False
